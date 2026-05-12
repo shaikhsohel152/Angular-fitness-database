@@ -1,88 +1,93 @@
 import Training from "../models/trainingSchema.js";
 
-
+// ================= GET ALL TRAINING =================
 export const getAllTraining = async (req, res) => {
-    try {
+  try {
+    const trainings = await Training.find();
 
-        const response = await Training.find();
+    res.status(200).json({
+      message: "Training Data Fetched",
+      trainings
+    });
 
-        res.json({
-            message: "Training Data Fetched",
-            response
-        });
-
-    } catch (error) {
-        res.json({
-            message: "Error Fetching Training",
-            error
-        });
-    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error Fetching Training",
+      error: error.message
+    });
+  }
 };
 
-
+// ================= ADD TRAINING =================
 export const postTraining = async (req, res) => {
-    try {
+  try {
+    const data = req.body;
 
-        const data = req.body;
+    const newTraining = await Training.create(data);
 
-        const response = await Training.create(data);
+    res.status(201).json({
+      message: "Training Added",
+      training: newTraining
+    });
 
-        res.json({
-            message: "Training Added",
-            response
-        });
-
-    } catch (error) {
-        res.json({
-            message: "Error Adding Training",
-            error
-        });
-    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error Adding Training",
+      error: error.message
+    });
+  }
 };
 
-
+// ================= UPDATE TRAINING =================
 export const updateTraining = async (req, res) => {
-    try {
+  try {
+    const id = req.params.id;
+    const data = req.body;
 
-        const id = req.params.id;
-        const data = req.body;
+    const updatedTraining = await Training.findByIdAndUpdate(id, data, {
+      new: true
+    });
 
-        const response = await Training.findByIdAndUpdate(
-            id,
-            data,
-            { new: true }
-        );
-
-        res.json({
-            message: "Training Updated",
-            response
-        });
-
-    } catch (error) {
-        res.json({
-            message: "Error Updating Training",
-            error
-        });
+    if (!updatedTraining) {
+      return res.status(404).json({
+        message: "Training not found"
+      });
     }
+
+    res.status(200).json({
+      message: "Training Updated",
+      training: updatedTraining
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error Updating Training",
+      error: error.message
+    });
+  }
 };
 
-
+// ================= DELETE TRAINING =================
 export const deleteTraining = async (req, res) => {
-    try {
+  try {
+    const id = req.params.id;
 
-        const id = req.params.id;
+    const deleted = await Training.findByIdAndDelete(id);
 
-        const response = await Training.findByIdAndDelete(id);
-
-        res.json({
-            message: "Training Deleted",
-            response
-        });
-
-    } catch (error) {
-        res.json({
-            message: "Error Deleting Training",
-            error
-        });
+    if (!deleted) {
+      return res.status(404).json({
+        message: "Training not found"
+      });
     }
+
+    res.status(200).json({
+      message: "Training Deleted"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error Deleting Training",
+      error: error.message
+    });
+  }
 };

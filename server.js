@@ -23,8 +23,7 @@ const port = process.env.PORT || 5000;
 
 app.use(cors({
   origin: [
-    "http://localhost:4200",
-    "https://gymgearpro.netlify.app"
+    "*"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true

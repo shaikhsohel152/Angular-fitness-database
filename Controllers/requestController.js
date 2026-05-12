@@ -1,35 +1,39 @@
-import Request from "../models/requestSchema.js"
+import Request from "../models/requestSchema.js";
 
+// ================= GET MESSAGES =================
 export const getMessage = async (req, res) => {
-    try {
-        const response = await Request.find();
-        res.json({
-            message: "Getting Message",
-            response
-        })
+  try {
+    const messages = await Request.find();
 
-    } catch (error) {
-        res.json({
-            message: "Error Occured While Getting Message"
-        })
-    }
-}
+    res.status(200).json({
+      message: "Messages fetched successfully",
+      messages
+    });
 
+  } catch (error) {
+    res.status(500).json({
+      message: "Error while getting messages",
+      error: error.message
+    });
+  }
+};
 
+// ================= POST MESSAGE =================
 export const postMessage = async (req, res) => {
-    try {
-        const data = req.body
-        const response = await Request.create(data);
-        res.json({
-            message: "Got Message",
-            response
-        })
+  try {
+    const data = req.body;
 
+    const newMessage = await Request.create(data);
 
-    } catch (error) {
-        res.json({
-            message: "Error Occured While Posting Message",
-            error
-        })
-    }
-}
+    res.status(201).json({
+      message: "Message received successfully",
+      messageData: newMessage
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error while posting message",
+      error: error.message
+    });
+  }
+};

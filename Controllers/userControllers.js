@@ -1,94 +1,89 @@
 import User from "../models/userSchema.js";
 
-
+// ================= GET ALL USERS =================
 export const getAllUsers = async (req, res) => {
-    try {
-        const response = await User.find();
-
-        res.json({
-            message: "All Users Fetched",
-            response
-        });
-
-    } catch (error) {
-        res.json({
-            message: "Error Fetching Users",
-            error
-        });
-    }
-};
-
-
-export const postUser = async (req, res) => {
-    try {
-        const data = req.body;
-
-        const response = await User.create(data);
-
-        res.json({
-            message: "User Added",
-            response
-        });
-
-    } catch (error) {
-        res.json({
-            message: "Error Adding User",
-            error
-        });
-    }
-};
-
-
-export const updateUser = async (req, res) => {
-    try {
-
-        const id = req.params.id;
-        const data = req.body;
-
-        const response = await User.findByIdAndUpdate(
-            id,
-            data,
-            { new: true }
-        );
-
-        res.json({
-            message: "User Updated",
-            response
-        });
-
-    } catch (error) {
-        res.json({
-            message: "Error Updating User",
-            error
-        });
-    }
-};
-
-
-export const deleteUser = async (req, res) => {
-    try {
-
-        const id = req.params.id;
-
-        const response = await User.findByIdAndDelete(id);
-
-        res.json({
-            message: "User Deleted",
-            response
-        });
-
-    } catch (error) {
-        res.json({
-            message: "Error Deleting User",
-            error
-        });
-    }
-};
-
-    export const loginUser = async (req, res) => {
-
   try {
+    const users = await User.find();
 
+    res.status(200).json({
+      message: "All Users Fetched",
+      users
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error Fetching Users",
+      error: error.message
+    });
+  }
+};
+
+// ================= CREATE USER (SIGNUP) =================
+export const postUser = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const newUser = await User.create(data);
+
+    res.status(201).json({
+      message: "User Added Successfully",
+      user: newUser   // ✅ FIXED (important)
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error Adding User",
+      error: error.message
+    });
+  }
+};
+
+// ================= UPDATE USER =================
+export const updateUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(id, data, {
+      new: true
+    });
+
+    res.status(200).json({
+      message: "User Updated",
+      user: updatedUser
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error Updating User",
+      error: error.message
+    });
+  }
+};
+
+// ================= DELETE USER =================
+export const deleteUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    res.status(200).json({
+      message: "User Deleted",
+      user: deletedUser
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error Deleting User",
+      error: error.message
+    });
+  }
+};
+
+// ================= LOGIN USER =================
+export const loginUser = async (req, res) => {
+  try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -111,12 +106,9 @@ export const deleteUser = async (req, res) => {
     });
 
   } catch (error) {
-
     res.status(500).json({
-      message: "Server Error"
+      message: "Server Error",
+      error: error.message
     });
-
   }
-
-
 };
