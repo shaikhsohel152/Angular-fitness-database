@@ -1,25 +1,30 @@
+// ================= Routes/userRoutes.js =================
+
 import express from "express";
 
 import {
- getAllUsers,
- postUser,
- updateUser,
- deleteUser,
- loginUser   // ✅ login controller add
+  getAllUsers,
+  postUser,
+  updateUser,
+  deleteUser,
+  loginUser
 } from "../Controllers/userControllers.js";
 
-const router = express.Router(); 
+const router = express.Router();
 
-// GET ALL USERS
+// ================= GET ALL USERS =================
 router.get("/", getAllUsers);
 
-// REGISTER USER
+// ================= SIGNUP =================
 router.post("/", postUser);
 
-// UPDATE USER
+// ================= LOGIN =================
+router.post("/login", loginUser);
+
+// ================= UPDATE USER =================
 router.put("/:id", updateUser);
 
-// DELETE USER
+// ================= DELETE USER =================
 router.delete("/:id", deleteUser);
 
 export default router;
