@@ -1,6 +1,6 @@
+
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import dns from "dns/promises";
 import cors from "cors";
 
@@ -8,10 +8,8 @@ import userRouter from "./routes/userRouter.js";
 import trainingRouter from "./routes/trainingRouter.js";
 import purchaseRouter from "./routes/purchaseRouter.js";
 import productRouter from "./routes/productRouter.js";
-import loginRouter from "./routes/loginRouter.js";
+import otpRouter from "./routes/OtpRoutes.js";
 import requestRouter from "./routes/requestRouter.js";
-
-dotenv.config();
 
 // DNS Fix
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
@@ -41,7 +39,7 @@ app.use("/users", userRouter);
 app.use("/training", trainingRouter);
 app.use("/purchase", purchaseRouter);
 app.use("/products", productRouter);
-app.use("/api", loginRouter);
+app.use("/api/otp", otpRouter);
 app.use("/request", requestRouter);
 
 // ================= TEST ROUTE =================

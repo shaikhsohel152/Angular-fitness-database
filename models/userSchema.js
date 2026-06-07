@@ -2,40 +2,22 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
 
-  name: {
-    type: String
-  },
+  name: String,
 
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
 
-  phone: {
-    type: String
-  },
+  phone: String,
 
-  password: {
-    type: String,
-    required: true
-  },
+  password: String,
 
-  address: {
-    type: String
-  },
+  address: String,
+  city: String,
+  pincode: String
 
-  // 🔥 ADD THIS
-  city: {
-    type: String
-  },
+}, { timestamps: true }); // 🔥 important
 
-  // 🔥 ADD THIS
-  pincode: {
-    type: String
-  }
-
-});
-
-const User = mongoose.model("User", userSchema);
-
-export default User;
+export default mongoose.model("User", userSchema);
