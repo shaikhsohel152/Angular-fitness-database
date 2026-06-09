@@ -3,7 +3,7 @@ import express from "express";
 import {
   sendOtp,
   verifyOtp
-} from "../controllers/OtpController.js";
+} from "../Controllers/OtpController.js";
 
 const router = express.Router();
 
