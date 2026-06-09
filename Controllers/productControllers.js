@@ -3,20 +3,27 @@ import Product from "../models/productSchema.js";
 export const getProducts = async (req, res) => {
   try {
 
-    const data = await Product.findOne();
+    console.log("Collection:", Product.collection.name);
+
+    const count = await Product.countDocuments();
+    console.log("Count:", count);
+
+    const one = await Product.findOne();
+    console.log("One:", one);
+
+    const products = await Product.find();
 
     res.status(200).json({
       message: "Products fetched successfully",
-      products: data?.products || []
+      products
     });
 
   } catch (error) {
+    console.log(error);
 
     res.status(500).json({
-      message: "Error fetching products",
-      error: error.message
+      message: error.message
     });
-
   }
 };
 
