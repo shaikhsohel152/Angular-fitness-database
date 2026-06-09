@@ -53,7 +53,7 @@ export const addProduct = async (req, res) => {
       price: req.body.price,
       discountPercentage: req.body.discountPercentage,
       rating: req.body.rating,
-      bought: req.body.bought,   // ✅ FIXED TYPO
+      bougth: req.body.bought,   // ✅ FIXED TYPO
       imgsrc: req.body.imgsrc
     });
 
