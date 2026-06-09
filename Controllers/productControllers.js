@@ -1,20 +1,22 @@
 import Product from "../models/productSchema.js";
 
-// ================= GET ALL PRODUCTS =================
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+
+    const data = await Product.findOne();
 
     res.status(200).json({
       message: "Products fetched successfully",
-      products
+      products: data?.products || []
     });
 
   } catch (error) {
+
     res.status(500).json({
       message: "Error fetching products",
       error: error.message
     });
+
   }
 };
 
