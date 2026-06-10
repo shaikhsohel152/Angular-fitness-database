@@ -25,9 +25,9 @@ export const transporter = nodemailer.createTransport({
   socketTimeout: 30000
 });
 
-transporter.verify((error, success) => {
+transporter.verify(function (error, success) {
   if (error) {
-    console.log("❌ SMTP Verify Error:", error);
+    console.error("❌ SMTP Verify Error:", error);
   } else {
     console.log("✅ SMTP Server Ready");
   }
