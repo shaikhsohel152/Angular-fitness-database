@@ -1,20 +1,11 @@
 import nodemailer from "nodemailer";
-
 import dotenv from "dotenv";
 
 dotenv.config();
 
-console.log(process.env.BREVO_SMTP);
-
-console.log(process.env.BREVO_PORT);
-
-console.log(process.env.BREVO_LOGIN);
-
-console.log(process.env.BREVO_PASSWORD);
-
 export const transporter = nodemailer.createTransport({
   host: process.env.BREVO_SMTP,
-  port: Number(process.env.BREVO_PORT),
+  port: 587,
   secure: false,
 
   auth: {
@@ -22,11 +13,22 @@ export const transporter = nodemailer.createTransport({
     pass: process.env.BREVO_PASSWORD
   },
 
+  requireTLS: true,
+
   tls: {
+    minVersion: "TLSv1.2",
     rejectUnauthorized: false
   },
 
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+  socketTimeout: 30000
+});
+
+transporter.verify((error, success) => {
+  if (error) {
+    console.log("❌ SMTP Verify Error:", error);
+  } else {
+    console.log("✅ SMTP Server Ready");
+  }
 });
