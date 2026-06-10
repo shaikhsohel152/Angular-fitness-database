@@ -12,21 +12,21 @@ console.log(process.env.BREVO_LOGIN);
 
 console.log(process.env.BREVO_PASSWORD);
 
-export const transporter =
-  nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
+  host: process.env.BREVO_SMTP,
+  port: Number(process.env.BREVO_PORT),
+  secure: false,
 
-    host: process.env.BREVO_SMTP,
+  auth: {
+    user: process.env.BREVO_LOGIN,
+    pass: process.env.BREVO_PASSWORD
+  },
 
-    port: Number(process.env.BREVO_PORT),
+  tls: {
+    rejectUnauthorized: false
+  },
 
-    secure: false,
-
-    auth: {
-
-      user: process.env.BREVO_LOGIN,
-
-      pass: process.env.BREVO_PASSWORD
-
-    }
-
-  });
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000
+});

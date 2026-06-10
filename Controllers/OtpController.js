@@ -8,22 +8,23 @@ export const sendOtp = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-      return res.json({
-        success: false,
-        message: "Email is required"
-      });
+      return res.json({ success: false, message: "Email is required" });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     await OTP.deleteMany({ email });
 
-    await OTP.create({
-      email,
-      otp
+    await OTP.create({ email, otp });
+
+    // ⚡ RESPONSE FIRST (FAST UX FIX)
+    res.json({
+      success: true,
+      message: "OTP sent successfully"
     });
 
-    await transporter.sendMail({
+    // 🔥 EMAIL SEND BACKGROUND (NON-BLOCKING)
+    transporter.sendMail({
       from: '"GYMGEARPRO" <sohelshaikhastroworld@gmail.com>',
       to: email,
       subject: "GYMGEARPRO OTP Verification",
@@ -34,22 +35,17 @@ export const sendOtp = async (req, res) => {
           <h2 style="font-size:42px;">${otp}</h2>
         </div>
       `
-    });
-
-    return res.json({
-      success: true,
-      message: "OTP Sent Successfully"
+    }).then(info => {
+      console.log("📧 OTP Email Sent:", info.response);
+    }).catch(err => {
+      console.error("❌ Email Failed:", err);
     });
 
   } catch (error) {
     console.log(error);
-    return res.json({
-      success: false,
-      message: "Error Sending OTP"
-    });
+    return res.json({ success: false, message: "Error Sending OTP" });
   }
 };
-
 // ================= VERIFY OTP (🔥 FIXED) =================
 export const verifyOtp = async (req, res) => {
   try {
